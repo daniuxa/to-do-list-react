@@ -2,11 +2,23 @@ import { useState } from "react";
 
 export default function Item(props){
     const [checked, setChecked] = useState(props.status);
-    const classes = ['todo'];
+    const [redactedTitle, setRedactedTitle] = useState('');
+    const [pressedRedactField, setPressedRedactField] = useState(false);
+    const [tasksTitle, setTasksTitle] = useState(props.title);
+    const classesForLi = ['todo'];
+    const classesForTitle = ['title'];
+    let classesForRedactInput = ['input-field', 'nonVisible'];
+
 
     if (checked)
     {
-        classes.push('status');
+        classesForLi.push('status');
+    }
+
+    if (pressedRedactField)
+    {
+        classesForTitle.push('nonVisible');
+        classesForRedactInput = ['input-field'];
     }
 
     const updateStatus = () => {
@@ -19,7 +31,7 @@ export default function Item(props){
             }
             return true;
         });
-        localStorage.setItem('tasks', JSON.stringify(storedTasks));
+        props.updateParent(storedTasks);
     }
 
     const removeElement = () => {
@@ -33,16 +45,42 @@ export default function Item(props){
         });
         props.updateParent(removedTasks);
     };
+
+    const redactTitle = e => {
+        if (e.key === 'Enter' && e.target.value !== ''){
+            setRedactedTitle();
+            //setTasksTitle('');
+        }
+    }
+
+    const makeVisibleReadactField = () => {
+
+    }
+
     return (
         <>
         {
-            //visible && 
-            (<li className={classes.join(' ')}>
+            (<li className={classesForLi.join(' ')}>
             <label>
-                <input type="checkbox"
-                checked={checked}
-                onChange={updateStatus}/>
-                <span>{props.title}</span>
+                <div className="inputFields">
+                    <input type="checkbox"
+                    checked={checked}
+                    onChange={updateStatus}/>
+                    <span className={classesForTitle.join(' ')}>{props.title}</span>
+
+                    <input
+                    className={classesForRedactInput.join(' ')}
+                    type="text"
+                    value={tasksTitle}
+                    onChange={event => setTasksTitle(event.target.value)}
+                    //onKeyDown={redactTitle}
+                    ></input>
+    
+                    <span className="redact"
+                    onClick={() => {setPressedRedactField(!pressedRedactField);}}
+                    >✎</span>  
+                </div> 
+                <span className="time">Added at {props.addedTaskTime}</span>   
                 <i className="material-icons red-text"
                 onClick={removeElement}>X</i>
             </label>

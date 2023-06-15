@@ -20,7 +20,8 @@ function Main(){
                 ...tasks, {
                     id: uuidv4(),
                     title: tasksTitle,
-                    status: false
+                    status: false,
+                    addedTaskTime: new Date().toLocaleTimeString()
                 }
             ]
             );
@@ -41,7 +42,7 @@ function Main(){
                 onKeyDown={addTasks}></input>
                 <label>Task name</label>
             </div>
-            
+            <span>Undone tasks: {tasks.filter(el => el.status === false).length}</span>
             <List tasks={tasks} updateParent={updateParentComponent}/>
         </div> 
     );

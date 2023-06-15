@@ -3,13 +3,29 @@
 body {
   margin: 0;
   padding: 0;
+  background-color: rgb(217, 226, 233);
 }
 
+span.title {
+  color: rgb(42, 44, 45);
+}
+span.time {
+  color: rgb(97, 110, 116);
+}
+span.redact{
+  margin-left: 1rem;
+  color: rgb(71, 75, 77);;
+}
 .todo {
   margin-bottom: 1.5rem;
 }
+.nonVisible{
+  visibility: hidden;
+  position: absolute;
+  left: -9999px;
+}
 
-.todo.status span{
+.todo.status span.title{
   text-decoration: line-through;
 }
 
@@ -20,6 +36,7 @@ body {
   justify-content: space-between;
   cursor: pointer;
   padding: 1rem;
+  background: rgb(202, 211, 217);
 }
 
 .todo i{
