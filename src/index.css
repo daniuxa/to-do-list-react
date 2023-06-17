@@ -12,19 +12,9 @@ span.title {
 span.time {
   color: rgb(97, 110, 116);
 }
-span.redact{
-  margin-left: 1rem;
-  color: rgb(71, 75, 77);;
-}
 .todo {
   margin-bottom: 1.5rem;
 }
-.nonVisible{
-  visibility: hidden;
-  position: absolute;
-  left: -9999px;
-}
-
 .todo.status span.title{
   text-decoration: line-through;
 }
