@@ -1,35 +1,30 @@
 import List from "./components/List";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {v4 as uuidv4} from 'uuid';
+import { useSelector, useDispatch } from "react-redux";
+import { addTask } from "./store/tasksSlice";
+
 function Main(){
-    let [tasks, setTasks] = useState(() => {
-        const storedTasks = localStorage.getItem('tasks');
-        return !storedTasks ? [] : JSON.parse(storedTasks);
+    const date = new Date();
+    let tasks = useSelector((state) => 
+    {
+        return state.tasksValue.tasks
     });
+    const dispatch = useDispatch();
+
     const [tasksTitle, setTasksTitle] = useState('');
-    const updateParentComponent = (newTasks) => {
-        setTasks([...newTasks]);
-      }
-    useEffect(() => {
-        localStorage.setItem('tasks', JSON.stringify(tasks));
-    }, [tasks]);
 
     const addTasks = e => {
         if (e.key === 'Enter' && e.target.value !== ''){
-            setTasks([
-                ...tasks, {
-                    id: uuidv4(),
-                    title: tasksTitle,
-                    status: false,
-                    addedTaskTime: new Date().toLocaleTimeString()
-                }
-            ]
-            );
+            dispatch(addTask({
+                id: uuidv4(),
+                title: tasksTitle,
+                status: false,
+                addedTaskTime: new Date().toLocaleTimeString()
+            }));
             setTasksTitle('');
         }
     }
-
-    const date = new Date();
 
     return (  
         <div className="container">
@@ -43,7 +38,7 @@ function Main(){
                 <label>Task name</label>
             </div>
             <span>Undone tasks: {tasks.filter(el => el.status === false).length}</span>
-            <List tasks={tasks} updateParent={updateParentComponent}/>
+            <List tasks={tasks} />
         </div> 
     );
 }
